@@ -20,7 +20,7 @@ class CustomProfileRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      height: SizeConfig.screenHeight * 0.07,
+      height: SizeConfig.screenHeight * 0.08,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(SizeConfig.screenHeight * 0.01),
         color: Colors.white,

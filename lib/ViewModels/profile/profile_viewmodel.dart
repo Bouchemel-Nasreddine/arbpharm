@@ -2,12 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:arbpharm/Models/profile/profile_model.dart';
+import 'package:arbpharm/Views/Authentication/login/login_view.dart';
+import 'package:arbpharm/configs/generale_vars.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Data Models/user.dart';
 import '../../configs/const.dart';
 
 class ProfileViewModel extends ChangeNotifier {
@@ -15,6 +19,7 @@ class ProfileViewModel extends ChangeNotifier {
   final refreshController = RefreshController();
   File? picture;
   bool pictureWorking = false;
+  bool working = false;
 
   Future<File?> getProfilePic() async {
     FilePickerResult? result =
@@ -25,10 +30,24 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> getProfile() async {
-    await Future.delayed(const Duration(seconds: 3));
+  Future<void> refresh() async {
     refreshController.loadComplete();
+    notifyListeners();
     return;
+  }
+
+  Future<void> getProfileDetails() async {
+    dio.Response? response = await model.getProfileDetails();
+
+    if (response == null) {
+      working = false;
+      notifyListeners();
+      return;
+    }
+
+    if (response.statusCode == 200) {
+      userCont = User.fromJson(response.data['data']);
+    }
   }
 
   Future<void> storeProfilePic(BuildContext context) async {
@@ -78,5 +97,29 @@ class ProfileViewModel extends ChangeNotifier {
       duration: duration,
     );
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  goToPage(BuildContext context, Widget destination) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: ((context, animation, secondaryAnimation) => destination),
+        transitionsBuilder: (context, a1, a2, child) => SlideTransition(
+          position: Tween(
+            begin: const Offset(1.0, 0.0),
+            end: const Offset(0.0, 0.0),
+          ).animate(a1),
+          child: child,
+        ),
+      ),
+    );
+  }
+
+  logout(BuildContext context) async {
+    userCont = User.initialise();
+    tokenConst = "";
+    (await SharedPreferences.getInstance()).clear().whenComplete(() {
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (context) => Login()), (route) => false);
+    });
   }
 }

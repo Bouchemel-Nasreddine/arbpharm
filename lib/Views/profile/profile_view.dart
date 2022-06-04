@@ -1,4 +1,5 @@
 import 'package:arbpharm/ViewModels/profile/profile_viewmodel.dart';
+import 'package:arbpharm/Views/Component/custom_circular_progress_indicator.dart';
 import 'package:arbpharm/Views/Component/custom_icon_button.dart';
 import 'package:arbpharm/Views/Component/profile_row.dart';
 import 'package:arbpharm/Views/profile/request_history.dart';
@@ -25,21 +26,13 @@ class ProfileView extends StatelessWidget {
       color: seaBlue,
       child: Consumer<ProfileViewModel>(
         builder: (context, value, child) => FutureBuilder(
-          future: value.getProfile(),
+          future: value.getProfileDetails(),
           builder: (context, snapShot) => snapShot.connectionState ==
                   ConnectionState.waiting
-              ? const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 0.7,
-                  ),
-                )
+              ? const CustomCircuarProgressIdicator()
               : SmartRefresher(
-                  onRefresh: () async {
-                    value.getProfile();
-                    return;
-                  },
                   controller: value.refreshController,
+                  onRefresh: () => value.refresh(),
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
@@ -132,12 +125,8 @@ class ProfileView extends StatelessWidget {
                                       CustomProfileRow(
                                         icon: "assets/gift.svg",
                                         title: 'Historique des demandes',
-                                        onPressed: () {
-                                          Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      RequestHistory()));
-                                        },
+                                        onPressed: () => value.goToPage(
+                                            context, const RequestHistory()),
                                       ),
                                       CustomProfileRow(
                                         icon: "assets/staff.svg",
@@ -151,6 +140,44 @@ class ProfileView extends StatelessWidget {
                                       ),
                                       Container(
                                         height: SizeConfig.screenHeight * 0.1,
+                                        alignment: Alignment.center,
+                                        child: Material(
+                                          color: Colors.transparent,
+                                          child: InkWell(
+                                            onTap: () => value.logout(context),
+                                            child: SizedBox(
+                                              width: SizeConfig.screenWidth *
+                                                  0.265,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  SvgPicture.asset(
+                                                    "assets/logout.svg",
+                                                    height: SizeConfig
+                                                            .screenHeight *
+                                                        0.025,
+                                                  ),
+                                                  Text(
+                                                    'déconnexion',
+                                                    style:
+                                                        GoogleFonts.montserrat(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: elictricBlue,
+                                                      fontSize: 1.75 *
+                                                          SizeConfig
+                                                              .blockSizeVertical,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -213,8 +240,9 @@ class ProfileView extends StatelessWidget {
                                             ),
                                           )
                                         : CachedNetworkImage(
-                                            imageUrl:
-                                                "https://via.placeholder.com/300/09f/fff.png",
+                                            imageUrl: userCont
+                                                    .getProfile.profilePic ??
+                                                "",
                                             fit: BoxFit.cover,
                                             errorWidget: (context, str, dyn) =>
                                                 SvgPicture.asset(

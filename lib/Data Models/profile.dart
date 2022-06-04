@@ -15,7 +15,7 @@ class Profile {
   });
   late final int id;
   late final int userId;
-  late final String profilePic;
+  late final String? profilePic;
   late final String socialName;
   late final String? socialPlace;
   late final String commercialName;

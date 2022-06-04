@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:arbpharm/Data%20Models/request.dart';
 import 'package:arbpharm/Models/request/request_model.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +15,7 @@ class RequestViewModel extends ChangeNotifier {
   final nameController = TextEditingController();
   final quantityController = TextEditingController();
   final marqueController = TextEditingController();
+  List<Request> personalRequestsList = [];
   File? photo;
 
   Future<File?> getProfilePic() async {
@@ -28,6 +30,22 @@ class RequestViewModel extends ChangeNotifier {
   String convertImageTo64(File image) {
     List<int> imageBytes = image.readAsBytesSync();
     return base64Encode(imageBytes);
+  }
+
+  getRequestHistory(BuildContext context) async {
+    dio.Response? response = await model.getRequests();
+
+    if (response == null) {
+      showSnackBar(
+          context: context, message: "erreur lors de l'obtention d'historique");
+      return;
+    }
+
+    if (response.statusCode == 200) {
+      for (var req in response.data) {
+        personalRequestsList.add(Request.fromJson(req));
+      }
+    }
   }
 
   showSnackBar(
