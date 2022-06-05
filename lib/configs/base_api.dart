@@ -10,3 +10,4 @@ var storeRequestUrl = requestEstimateUrl + "/store_offer";
 var profileDetailsUrl = baseApi + "/profile-details";
 var getMyRequestsUrl = baseApi + "/getMyRequest";
 var changePasswordUrl = baseApi + "/change-password";
+var updateProfileUrl = baseApi + "/update-profile";

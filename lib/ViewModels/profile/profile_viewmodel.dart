@@ -195,4 +195,42 @@ class ProfileViewModel extends ChangeNotifier {
     adrController.text = userCont.getProfile.socialPlace ?? "";
     actCodeController.text = userCont.getProfile.activityCode;
   }
+
+  void upadateProfileInfo(BuildContext context) async {
+    working = true;
+    notifyListeners();
+    dio.Response? response = await model.upadateProfileInfo(
+      email: emailController.text,
+      phone: phoneController.text,
+      commercialName: commercialNameController.text,
+      socialName: socialNameController.text,
+      numRc: int.parse(nrcController.text),
+      nif: int.parse(nifController.text),
+      nis: int.parse(nisController.text),
+      numAr: int.parse(narController.text),
+      socialPlace: adrController.text,
+      actCode: int.parse(actCodeController.text),
+    );
+
+    if (response == null) {
+      showSnackBar(context: context, message: 'erruer lors du changement');
+      working = false;
+      notifyListeners();
+      return;
+    }
+
+    if (response.statusCode == 204) {
+      working = false;
+      notifyListeners();
+      Navigator.pop(context);
+      showSnackBar(
+          context: context, message: 'modifications sauvgardé avec success');
+    } else if (response.statusCode == 422) {
+      displayErrors(context: context, data: response.data);
+    } else {
+      showSnackBar(context: context, message: 'erruer lors du changement');
+    }
+    working = false;
+    notifyListeners();
+  }
 }

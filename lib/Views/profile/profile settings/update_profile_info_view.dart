@@ -141,7 +141,7 @@ class UpdateProfileView extends StatelessWidget {
                                 text: 'appliquer',
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    value.changePassword(context);
+                                    value.upadateProfileInfo(context);
                                   }
                                 }),
                             SizedBox(

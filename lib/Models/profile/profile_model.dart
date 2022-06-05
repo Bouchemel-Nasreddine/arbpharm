@@ -109,4 +109,48 @@ class ProfileModel {
       return e.response;
     }
   }
+
+  upadateProfileInfo({
+    required String email,
+    required String phone,
+    required String commercialName,
+    required String socialName,
+    required int numRc,
+    required int nif,
+    required int nis,
+    required int numAr,
+    required String socialPlace,
+    required int actCode,
+  }) async {
+    try {
+      dio.Response response = await _dioClient.put(
+        updateProfileUrl,
+        options: dio.Options(
+          headers: {
+            "Accept": "application/json",
+            "Authorization": 'Bearer $tokenConst',
+          },
+        ),
+        data: {
+          "email": email,
+          "phone": phone,
+          "social_name": socialName,
+          "social_place": socialPlace,
+          "commercial_name": commercialName,
+          "num_rc": numRc,
+          "nif": nif,
+          "nis": nis,
+          "num_ar": numAr,
+          "activity_code": actCode,
+        },
+      );
+
+      return response;
+    } on dio.DioError catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return e.response;
+    }
+  }
 }
