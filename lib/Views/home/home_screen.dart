@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ],
               ),
               SizedBox(
-                height: SizeConfig.screenHeight * 0.68,
+                height: SizeConfig.screenHeight * 0.67,
                 child: Consumer<HomeViewModel>(
                   builder: (context, value, child) {
                     _tabController!.addListener(() {
@@ -132,12 +132,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     return TabBarView(
                       controller: _tabController,
                       children: [
-                        Text('hello'),
+                        const Center(child: Text('< Coming soon :) />')),
                         value.working
                             ? Center(
                                 child: CircularProgressIndicator(),
                               )
-                            : Text('hi'),
+                            : const Center(child: Text('< Coming soon :) />')),
                         //value.getRequestsList(),
                       ],
                     );

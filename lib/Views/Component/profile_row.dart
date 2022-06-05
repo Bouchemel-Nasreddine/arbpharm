@@ -26,7 +26,7 @@ class CustomProfileRow extends StatelessWidget {
         color: Colors.white,
         boxShadow: const [
           BoxShadow(
-            color: Colors.black12,
+            color: Color(0x08000000),
             spreadRadius: 2,
             blurRadius: 5,
             blurStyle: BlurStyle.normal,

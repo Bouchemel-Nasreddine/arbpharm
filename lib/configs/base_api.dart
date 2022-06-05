@@ -8,3 +8,5 @@ var storeProfilePicUrl = baseApi + "/store-profile-pic";
 var requestEstimateUrl = baseApi + "/request_estimate";
 var storeRequestUrl = requestEstimateUrl + "/store_offer";
 var profileDetailsUrl = baseApi + "/profile-details";
+var getMyRequestsUrl = baseApi + "/getMyRequest";
+var changePasswordUrl = baseApi + "/change-password";

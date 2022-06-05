@@ -20,6 +20,21 @@ class ProfileViewModel extends ChangeNotifier {
   File? picture;
   bool pictureWorking = false;
   bool working = false;
+  //for password change
+  final oldPasswordController = TextEditingController();
+  final newPasswordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  //for profile info update
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final commercialNameController = TextEditingController();
+  final socialNameController = TextEditingController();
+  final nrcController = TextEditingController();
+  final nifController = TextEditingController();
+  final nisController = TextEditingController();
+  final narController = TextEditingController();
+  final adrController = TextEditingController();
+  final actCodeController = TextEditingController();
 
   Future<File?> getProfilePic() async {
     FilePickerResult? result =
@@ -99,6 +114,17 @@ class ProfileViewModel extends ChangeNotifier {
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
+  displayErrors(
+      {required BuildContext context, required Map<String, dynamic> data}) {
+    String message = "";
+    var errors = data['errors'];
+    errors.forEach((key, value) {
+      message = message + value[0] + '\n';
+    });
+    message = message.substring(0, message.length - 1);
+    showSnackBar(context: context, message: message);
+  }
+
   goToPage(BuildContext context, Widget destination) {
     Navigator.of(context).push(
       PageRouteBuilder(
@@ -121,5 +147,52 @@ class ProfileViewModel extends ChangeNotifier {
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (context) => Login()), (route) => false);
     });
+  }
+
+  void changePassword(BuildContext context) async {
+    working = true;
+    notifyListeners();
+    dio.Response? response = await model.changePassword(
+      oldPassword: oldPasswordController.text,
+      newPassword: newPasswordController.text,
+      confirmationPassword: confirmPasswordController.text,
+    );
+
+    if (response == null) {
+      showSnackBar(context: context, message: 'erruer lors du changement');
+      working = false;
+      notifyListeners();
+      return;
+    }
+
+    if (response.statusCode == 204) {
+      oldPasswordController.text = "";
+      newPasswordController.text = "";
+      confirmPasswordController.text = "";
+      working = false;
+      notifyListeners();
+      Navigator.pop(context);
+      showSnackBar(
+          context: context, message: 'mot de passe changé avec success');
+    } else if (response.statusCode == 422) {
+      displayErrors(context: context, data: response.data);
+    } else {
+      showSnackBar(context: context, message: 'erruer lors du changement');
+    }
+    working = false;
+    notifyListeners();
+  }
+
+  setFields() async {
+    emailController.text = userCont.email;
+    phoneController.text = userCont.phone;
+    commercialNameController.text = userCont.getProfile.commercialName;
+    socialNameController.text = userCont.getProfile.socialName;
+    nrcController.text = userCont.getProfile.numRc;
+    nifController.text = userCont.getProfile.nif;
+    nisController.text = userCont.getProfile.nis ?? "";
+    narController.text = userCont.getProfile.numAr ?? "";
+    adrController.text = userCont.getProfile.socialPlace ?? "";
+    actCodeController.text = userCont.getProfile.activityCode;
   }
 }

@@ -33,8 +33,8 @@ class CustomBackAppBar extends StatelessWidget {
       title: Text(
         title,
         style: GoogleFonts.inter(
-          fontWeight: FontWeight.w700,
-          fontSize: 2.5 * SizeConfig.blockSizeVertical,
+          fontWeight: FontWeight.w600,
+          fontSize: 2.3 * SizeConfig.blockSizeVertical,
           color: spaceCadet,
         ),
       ),

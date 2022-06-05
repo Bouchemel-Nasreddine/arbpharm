@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../configs/const.dart';
 
@@ -17,13 +18,16 @@ class RequestViewModel extends ChangeNotifier {
   final marqueController = TextEditingController();
   List<Request> personalRequestsList = [];
   File? photo;
+  bool working = false;
+  final refreshController = RefreshController();
 
-  Future<File?> getProfilePic() async {
+  Future<void> getPic() async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(type: FileType.image);
 
     if (result != null) {
-      return File(result.files.single.path!);
+      photo = File(result.files.single.path!);
+      notifyListeners();
     }
   }
 
@@ -33,7 +37,7 @@ class RequestViewModel extends ChangeNotifier {
   }
 
   getRequestHistory(BuildContext context) async {
-    dio.Response? response = await model.getRequests();
+    dio.Response? response = await model.getMyRequests();
 
     if (response == null) {
       showSnackBar(
@@ -42,9 +46,47 @@ class RequestViewModel extends ChangeNotifier {
     }
 
     if (response.statusCode == 200) {
-      for (var req in response.data) {
-        personalRequestsList.add(Request.fromJson(req));
+      if (response.data != "") {
+        personalRequestsList.clear();
+        for (var req in response.data) {
+          personalRequestsList.add(Request.fromJson(req));
+        }
       }
+    }
+  }
+
+  Future<void> refresh() async {
+    notifyListeners();
+  }
+
+  postRequest(BuildContext context) async {
+    if (photo == null) return;
+
+    working = true;
+    notifyListeners();
+
+    var picture64 = convertImageTo64(photo!);
+
+    dio.Response? reqponse = await model.postRequest(
+      productName: nameController.text,
+      amount: int.parse(quantityController.text),
+      mark: marqueController.text,
+      images: [picture64],
+    );
+
+    if (reqponse == null) {
+      showSnackBar(context: context, message: 'erreur');
+      return;
+    }
+
+    working = false;
+    notifyListeners();
+
+    if (reqponse.statusCode == 200) {
+      Navigator.pop(context);
+      Navigator.pop(context);
+      showSnackBar(
+          context: context, message: 'votre demande a été envoyé avec success');
     }
   }
 

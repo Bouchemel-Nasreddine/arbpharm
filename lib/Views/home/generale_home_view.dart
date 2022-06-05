@@ -21,7 +21,7 @@ class _GeneraleHomeState extends State<GeneraleHomeView> {
   List<Widget> _buildScreens() {
     return [
       const HomeScreen(),
-      Container(),
+      const Center(child: Text('< Coming soon :) />')),
       const BookmarkView(),
       const ProfileView(),
     ];

@@ -11,7 +11,7 @@ import 'package:arbpharm/Views/Authentication/login/reset_password_view.dart';
 import 'package:arbpharm/Views/Authentication/register/add_profil_photo_view.dart';
 import 'package:arbpharm/Views/home/generale_home_view.dart';
 import 'package:arbpharm/Views/products/product_details_view.dart';
-import 'package:arbpharm/Views/profile/profile_settings.dart';
+import 'package:arbpharm/Views/profile/profile%20settings/profile_settings.dart';
 import 'package:arbpharm/Views/profile/request_history.dart';
 import 'package:arbpharm/configs/generale_vars.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';

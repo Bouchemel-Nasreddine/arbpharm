@@ -26,4 +26,58 @@ class RequestModel {
       return e.response;
     }
   }
+
+  Future<dio.Response?> getMyRequests() async {
+    try {
+      dio.Response response = await _dioClient.get(
+        '$getMyRequestsUrl/${userCont.id}',
+        options: dio.Options(
+          headers: {
+            "Authorization": "Bearer $tokenConst",
+            "Accept": "application/json"
+          },
+        ),
+      );
+
+      return response;
+    } on dio.DioError catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return e.response;
+    }
+  }
+
+  Future<dio.Response?> postRequest({
+    required String productName,
+    required int amount,
+    required String mark,
+    int? price,
+    required List<String> images,
+  }) async {
+    try {
+      dio.Response response = await _dioClient.post(
+        requestEstimateUrl,
+        options: dio.Options(
+          headers: {
+            "Authorization": "Bearer $tokenConst",
+            "Accept": "application/json"
+          },
+        ),
+        data: dio.FormData.fromMap({
+          "product_name": productName,
+          "amount": amount,
+          "mark": mark,
+          "images": images
+        }),
+      );
+
+      return response;
+    } on dio.DioError catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return e.response;
+    }
+  }
 }

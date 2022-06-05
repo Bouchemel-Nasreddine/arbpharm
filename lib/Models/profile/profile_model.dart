@@ -79,4 +79,34 @@ class ProfileModel {
       return e.response;
     }
   }
+
+  Future<dio.Response?> changePassword({
+    required String oldPassword,
+    required String newPassword,
+    required String confirmationPassword,
+  }) async {
+    try {
+      dio.Response response = await _dioClient.put(
+        changePasswordUrl,
+        options: dio.Options(
+          headers: {
+            "Accept": "application/json",
+            "Authorization": 'Bearer $tokenConst',
+          },
+        ),
+        data: {
+          'old_password': oldPassword,
+          'new_password': newPassword,
+          'new_password_confirmation': confirmationPassword,
+        },
+      );
+
+      return response;
+    } on dio.DioError catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return e.response;
+    }
+  }
 }

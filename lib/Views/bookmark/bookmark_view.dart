@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/const.dart';
 import '../../configs/size_config.dart';
+import '../Component/coming_soon_view.dart';
 
 class BookmarkView extends StatelessWidget {
   const BookmarkView({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class BookmarkView extends StatelessWidget {
             topRight: Radius.circular(SizeConfig.screenHeight * 0.02),
           ),
         ),
-        child: Column(),
+        child: const Center(child: Text('< Coming soon :) />')),
       ),
     );
   }

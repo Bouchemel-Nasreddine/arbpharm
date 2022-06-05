@@ -1,7 +1,9 @@
 import 'package:arbpharm/ViewModels/profile/profile_viewmodel.dart';
+import 'package:arbpharm/Views/Component/coming_soon_view.dart';
 import 'package:arbpharm/Views/Component/custom_circular_progress_indicator.dart';
 import 'package:arbpharm/Views/Component/custom_icon_button.dart';
 import 'package:arbpharm/Views/Component/profile_row.dart';
+import 'package:arbpharm/Views/profile/profile%20settings/profile_settings.dart';
 import 'package:arbpharm/Views/profile/request_history.dart';
 import 'package:arbpharm/configs/const.dart';
 import 'package:arbpharm/configs/generale_vars.dart';
@@ -56,24 +58,27 @@ class ProfileView extends StatelessWidget {
                                           2.7 * SizeConfig.blockSizeVertical,
                                     ),
                                   ),
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                    ),
-                                    clipBehavior: Clip.antiAlias,
-                                    padding: EdgeInsets.all(
-                                        SizeConfig.screenHeight * 0.005),
-                                    child: Text(
-                                      'A',
-                                      style: GoogleFonts.poppins(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize:
-                                            SizeConfig.blockSizeVertical * 2.8,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  ),
+                                  userCont.type != null
+                                      ? Container(
+                                          decoration: const BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: Colors.white,
+                                          ),
+                                          clipBehavior: Clip.antiAlias,
+                                          padding: EdgeInsets.all(
+                                              SizeConfig.screenHeight * 0.005),
+                                          child: Text(
+                                            userCont.type!,
+                                            style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize:
+                                                  SizeConfig.blockSizeVertical *
+                                                      2.8,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        )
+                                      : Container(),
                                 ],
                               ),
                               CustomIconButton(
@@ -81,7 +86,14 @@ class ProfileView extends StatelessWidget {
                                   "assets/Notification.svg",
                                   color: Colors.white,
                                 ),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ComingSoonView()),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -120,7 +132,8 @@ class ProfileView extends StatelessWidget {
                                       CustomProfileRow(
                                         icon: "assets/profile.svg",
                                         title: 'Profil',
-                                        onPressed: () {},
+                                        onPressed: () => value.goToPage(
+                                            context, const ProfileSettings()),
                                       ),
                                       CustomProfileRow(
                                         icon: "assets/gift.svg",
@@ -131,12 +144,14 @@ class ProfileView extends StatelessWidget {
                                       CustomProfileRow(
                                         icon: "assets/staff.svg",
                                         title: 'Contactez-nous',
-                                        onPressed: () {},
+                                        onPressed: () => value.goToPage(
+                                            context, const ComingSoonView()),
                                       ),
                                       CustomProfileRow(
                                         icon: "assets/info.svg",
                                         title: 'A Propos',
-                                        onPressed: () {},
+                                        onPressed: () => value.goToPage(
+                                            context, const ComingSoonView()),
                                       ),
                                       Container(
                                         height: SizeConfig.screenHeight * 0.1,
@@ -168,9 +183,9 @@ class ProfileView extends StatelessWidget {
                                                       fontWeight:
                                                           FontWeight.w500,
                                                       color: elictricBlue,
-                                                      fontSize: 1.75 *
+                                                      fontSize: 3 *
                                                           SizeConfig
-                                                              .blockSizeVertical,
+                                                              .blockSizeHorizontal,
                                                     ),
                                                   )
                                                 ],
