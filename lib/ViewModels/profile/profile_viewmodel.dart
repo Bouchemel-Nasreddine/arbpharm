@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:arbpharm/Models/profile/profile_model.dart';
-import 'package:arbpharm/Views/Authentication/login/login_view.dart';
 import 'package:arbpharm/configs/generale_vars.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:dio/dio.dart' as dio;
@@ -43,6 +42,7 @@ class ProfileViewModel extends ChangeNotifier {
     if (result != null) {
       return File(result.files.single.path!);
     }
+    return null;
   }
 
   Future<void> refresh() async {
@@ -52,17 +52,33 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   Future<void> getProfileDetails() async {
+    var userData;
+    int id = (await SharedPreferences.getInstance()).getInt('id') as int;
+
+    dio.Response? profileResponse = await model.getProfile(id: id);
+
+    if (profileResponse == null) {
+      return;
+    }
+
+    if (profileResponse.statusCode == 200) {
+      userData = profileResponse.data;
+    }
+
     dio.Response? response = await model.getProfileDetails();
 
     if (response == null) {
-      working = false;
-      notifyListeners();
       return;
     }
 
     if (response.statusCode == 200) {
-      userCont = User.fromJson(response.data['data']);
+      userData.addAll(response.data['data']);
     }
+
+    if (response.statusCode == 200 && profileResponse.statusCode == 200) {
+      userConst = User.fromJson(userData);
+    }
+    return;
   }
 
   Future<void> storeProfilePic(BuildContext context) async {
@@ -141,11 +157,13 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   logout(BuildContext context) async {
-    userCont = User.initialise();
-    tokenConst = "";
     (await SharedPreferences.getInstance()).clear().whenComplete(() {
-      Navigator.pushAndRemoveUntil(context,
-          MaterialPageRoute(builder: (context) => Login()), (route) => false);
+      userConst = User.initialise();
+      tokenConst = "";
+      mainNavigatorKey.currentState!.pushNamedAndRemoveUntil(
+        '/login',
+        (route) => false,
+      );
     });
   }
 
@@ -184,16 +202,16 @@ class ProfileViewModel extends ChangeNotifier {
   }
 
   setFields() async {
-    emailController.text = userCont.email;
-    phoneController.text = userCont.phone;
-    commercialNameController.text = userCont.getProfile.commercialName;
-    socialNameController.text = userCont.getProfile.socialName;
-    nrcController.text = userCont.getProfile.numRc;
-    nifController.text = userCont.getProfile.nif;
-    nisController.text = userCont.getProfile.nis ?? "";
-    narController.text = userCont.getProfile.numAr ?? "";
-    adrController.text = userCont.getProfile.socialPlace ?? "";
-    actCodeController.text = userCont.getProfile.activityCode;
+    emailController.text = userConst.email;
+    phoneController.text = userConst.phone;
+    commercialNameController.text = userConst.getProfile.commercialName;
+    socialNameController.text = userConst.getProfile.socialName;
+    nrcController.text = userConst.getProfile.numRc;
+    nifController.text = userConst.getProfile.nif;
+    nisController.text = userConst.getProfile.nis ?? "";
+    narController.text = userConst.getProfile.numAr ?? "";
+    adrController.text = userConst.getProfile.socialPlace ?? "";
+    actCodeController.text = userConst.getProfile.activityCode;
   }
 
   void upadateProfileInfo(BuildContext context) async {

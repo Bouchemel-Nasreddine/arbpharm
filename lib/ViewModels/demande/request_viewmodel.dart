@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:arbpharm/Data%20Models/request.dart';
 import 'package:arbpharm/Models/request/request_model.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -85,6 +84,11 @@ class RequestViewModel extends ChangeNotifier {
     if (reqponse.statusCode == 200) {
       Navigator.pop(context);
       Navigator.pop(context);
+      nameController.clear();
+      marqueController.clear();
+      quantityController.clear();
+      photo = null;
+      notifyListeners();
       showSnackBar(
           context: context, message: 'votre demande a été envoyé avec success');
     }

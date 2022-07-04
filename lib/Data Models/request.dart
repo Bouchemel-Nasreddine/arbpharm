@@ -37,9 +37,10 @@ class Request {
     countOffers = json['count_offers'];
     createdAt = json['created_at'];
     image = json['image'];
-    if (json['images'] != null)
+    if (json['images'] != null) {
       images =
           List.from(json['images']).map((e) => Images.fromJson(e)).toList();
+    }
   }
 
   Map<String, dynamic> toJson() {

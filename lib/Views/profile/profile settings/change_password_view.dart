@@ -52,7 +52,7 @@ class ChangePasswordView extends StatelessWidget {
                         validator: (value) {
                           if (value == null) return '';
                           if (value.isEmpty) {
-                            return 'required field';
+                            return 'champ obligatoire';
                           }
                           return null;
                         },
@@ -65,7 +65,7 @@ class ChangePasswordView extends StatelessWidget {
                         validator: (val) {
                           if (val == null) return '';
                           if (val.isEmpty) {
-                            return 'required field';
+                            return 'champ obligatoire';
                           }
                           return null;
                         },
@@ -78,7 +78,7 @@ class ChangePasswordView extends StatelessWidget {
                         validator: (val) {
                           if (val == null) return '';
                           if (val.isEmpty) {
-                            return 'required field';
+                            return 'champ obligatoire';
                           } else if (val != value.newPasswordController.text) {
                             return 'les deux mots de passes ne sont pas identiques';
                           }

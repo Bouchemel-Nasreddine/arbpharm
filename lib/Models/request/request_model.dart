@@ -30,7 +30,7 @@ class RequestModel {
   Future<dio.Response?> getMyRequests() async {
     try {
       dio.Response response = await _dioClient.get(
-        '$getMyRequestsUrl/${userCont.id}',
+        '$getMyRequestsUrl/${userConst.id}',
         options: dio.Options(
           headers: {
             "Authorization": "Bearer $tokenConst",

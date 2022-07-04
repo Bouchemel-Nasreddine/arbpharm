@@ -9,25 +9,50 @@ import '../../configs/generale_vars.dart';
 class ProfileModel {
   final _dioClient = dio.Dio();
 
-  Future<http.Response> getProfile({
+  Future<dio.Response?> getProfile({
     required int id,
-    required String token,
   }) async {
     try {
-      http.Response response = await http.get(
-        Uri.parse('$profileUrl/$id'),
-        headers: {
-          "Accept": "application/json",
-          "Authorization": 'Bearer $token',
-        },
+      dio.Response response = await _dioClient.get(
+        '$profileUrl/$id',
+        options: dio.Options(
+          headers: {
+            "Accept": "application/json",
+            'Authorization':
+                'Bearer ${(await SharedPreferences.getInstance()).getString('token')}',
+          },
+        ),
       );
 
       return response;
-    } on Exception catch (e) {
+    } on dio.DioError catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      return http.Response('', 550);
+      return e.response;
+    }
+  }
+
+  Future<dio.Response?> checkProfileActivation({
+    required String token,
+  }) async {
+    try {
+      dio.Response response = await _dioClient.get(
+        checkUserUrl,
+        options: dio.Options(
+          headers: {
+            "Accept": "application/json",
+            "Authorization": 'Bearer $token',
+          },
+        ),
+      );
+
+      return response;
+    } on dio.DioError catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return e.response;
     }
   }
 

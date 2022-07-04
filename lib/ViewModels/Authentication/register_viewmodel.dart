@@ -7,7 +7,6 @@ import 'package:arbpharm/configs/const.dart';
 import 'package:arbpharm/configs/generale_vars.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -41,11 +40,10 @@ class RegisterViewModel extends ChangeNotifier {
 
   getProofsPics(BuildContext context) async {
     if (working) return;
-    if (paymentProofs.length == 4) {
+    if (paymentProofs.length < 2 && paymentProofs.length > 4) {
       showSnackBar(
         context: context,
-        message:
-            '4 photos sont requies, prendre une photo pour chaque élement demandé',
+        message: 'au moins 2 photos sont requies.',
       );
       return;
     }
@@ -54,7 +52,6 @@ class RegisterViewModel extends ChangeNotifier {
 
     if (result != null) {
       for (var f in result.paths) {
-        if (f != null) var file = File(f);
         if (f != null) paymentProofs.add(File(f));
       }
       notifyListeners();
@@ -102,9 +99,9 @@ class RegisterViewModel extends ChangeNotifier {
     }
 
     if (response.statusCode == 200) {
-      userCont = User.fromJson(response.data);
-      if (userCont.connected) {
-        (await SharedPreferences.getInstance()).setInt("id", userCont.id);
+      userConst = User.fromJson(response.data);
+      if (userConst.connected) {
+        (await SharedPreferences.getInstance()).setInt("id", userConst.id);
         navigateToHome(context);
       }
     } else if (response.statusCode == 422) {

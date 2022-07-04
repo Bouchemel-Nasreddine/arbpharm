@@ -60,6 +60,7 @@ class PayementInformationView extends StatelessWidget {
                     ),
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomUploadFileField(
                         size: Size(
@@ -76,7 +77,15 @@ class PayementInformationView extends StatelessWidget {
                         uploadPhoto: () => value.getProofsPics(context),
                       ),
                       SizedBox(
-                        height: SizeConfig.screenHeight * 0.01,
+                        height: SizeConfig.screenHeight * 0.03,
+                        child: Text(
+                          '*2 fichiers au minimum requis, 4 au maximum',
+                          style: GoogleFonts.inter(
+                            fontSize: 1.4 * SizeConfig.blockSizeVertical,
+                            color: manatee,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
                       ),
                       SizedBox(
                         height: SizeConfig.screenHeight * 0.12,
@@ -232,7 +241,8 @@ class PayementInformationView extends StatelessWidget {
                   CustomButton(
                     text: 'Envoyer',
                     onPressed: () {
-                      if (value.paymentProofs.length == 4) {
+                      if (value.paymentProofs.length >= 2 &&
+                          value.paymentProofs.length <= 4) {
                         value.register(context);
                       }
                     },

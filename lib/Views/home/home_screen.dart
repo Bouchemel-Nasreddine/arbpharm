@@ -1,5 +1,6 @@
 import 'package:arbpharm/ViewModels/home/home_viewmodel.dart';
 import 'package:arbpharm/Views/Component/app_bar.dart';
+import 'package:arbpharm/Views/Component/request_item.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -69,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 },
                 labelColor: elictricBlue,
                 unselectedLabelColor: manatee,
-                indicator: BoxDecoration(),
+                indicator: const BoxDecoration(),
                 labelPadding: EdgeInsets.zero,
                 labelStyle: GoogleFonts.montserrat(
                   fontWeight: FontWeight.w600,
@@ -134,11 +135,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       children: [
                         const Center(child: Text('< Coming soon :) />')),
                         value.working
-                            ? Center(
+                            ? const Center(
                                 child: CircularProgressIndicator(),
                               )
-                            : const Center(child: Text('< Coming soon :) />')),
-                        //value.getRequestsList(),
+                            : ListView.builder(
+                                itemCount: value.requestList.length,
+                                itemBuilder: (context, index) => RequestItem(
+                                    viewMode: 1,
+                                    request: value.requestList[index]),
+                              ),
                       ],
                     );
                   },
@@ -161,7 +166,6 @@ void displayAddDialog(context) {
         child: Opacity(opacity: a1.value, child: widget),
       );
     },
-    transitionDuration: const Duration(milliseconds: 200),
     pageBuilder: (BuildContext context, Animation<double> animation,
         Animation<double> secondaryAnimation) {
       return const AddDialogView();

@@ -59,7 +59,7 @@ class ForgottenPasswordView extends StatelessWidget {
                         validator: (value) {
                           if (value == null) return '';
                           if (value.isEmpty) {
-                            return 'required field';
+                            return 'champ obligatoire';
                           }
                           return null;
                         },

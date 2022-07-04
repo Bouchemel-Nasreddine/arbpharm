@@ -9,7 +9,9 @@ import '../../configs/size_config.dart';
 
 class RequestItem extends StatelessWidget {
   final Request request;
-  const RequestItem({Key? key, required this.request}) : super(key: key);
+  final int viewMode;
+  const RequestItem({Key? key, required this.request, this.viewMode = 0})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +19,14 @@ class RequestItem extends StatelessWidget {
       height: SizeConfig.screenHeight * 0.2,
       margin: EdgeInsets.only(
         bottom: SizeConfig.screenHeight * 0.02,
-        left: SizeConfig.screenWidth * 0.05,
-        right: SizeConfig.screenWidth * 0.05,
+        left: SizeConfig.screenWidth * viewMode == 0 ? 0.05 : 0.02,
+        right: SizeConfig.screenWidth * viewMode == 0 ? 0.05 : 0.02,
       ),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(SizeConfig.screenHeight * 0.02),
+        borderRadius: BorderRadius.circular(viewMode == 0
+            ? SizeConfig.screenHeight * 0.02
+            : SizeConfig.screenHeight * 0.015),
         boxShadow: const [
           BoxShadow(
             color: Color(0x06000000),
@@ -59,11 +63,15 @@ class RequestItem extends StatelessWidget {
                     progressIndicatorBuilder: (context, str, progress) =>
                         SizedBox(
                       height: SizeConfig.screenHeight * 0.2,
-                      width: SizeConfig.screenWidth * 0.45,
+                      width: viewMode == 0
+                          ? SizeConfig.screenWidth * 0.45
+                          : SizeConfig.screenHeight * 0.2,
                       child: const LinearProgressIndicator(),
                     ),
                     height: SizeConfig.screenHeight * 0.2,
-                    width: SizeConfig.screenWidth * 0.45,
+                    width: viewMode == 0
+                        ? SizeConfig.screenWidth * 0.45
+                        : SizeConfig.screenHeight * 0.2,
                   ),
                 )
               : SvgPicture.asset("assets/arbpharm_logo.svg"),
@@ -86,7 +94,9 @@ class RequestItem extends StatelessWidget {
                         request.productName,
                         style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.w600,
-                          fontSize: 2 * SizeConfig.blockSizeVertical,
+                          fontSize: viewMode == 0
+                              ? 2
+                              : 1.8 * SizeConfig.blockSizeVertical,
                           color: spaceCadet,
                         ),
                       ),
@@ -94,7 +104,9 @@ class RequestItem extends StatelessWidget {
                         'quantité: ${request.amount}',
                         style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.w600,
-                          fontSize: 2 * SizeConfig.blockSizeVertical,
+                          fontSize: viewMode == 0
+                              ? 2
+                              : 1.8 * SizeConfig.blockSizeVertical,
                           color: spaceCadet,
                         ),
                       ),
@@ -102,28 +114,56 @@ class RequestItem extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: SizeConfig.screenWidth * 0.4,
+                  width: SizeConfig.screenWidth * 0.45,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Container(
-                        height: SizeConfig.screenHeight * 0.03,
-                        width: SizeConfig.screenWidth * 0.3,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                              SizeConfig.screenHeight * 0.007),
-                          color: elictricBlue,
-                        ),
-                        alignment: Alignment.center,
+                      ElevatedButton(
+                        onPressed: viewMode == 0 ? () {} : () {},
                         child: Text(
-                          'vous avez ${request.countOffers} offres',
+                          viewMode == 0
+                              ? 'vous avez ${request.countOffers ?? 0} offres'
+                              : 'disponible',
                           style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.w600,
-                            fontSize: 2.7 * SizeConfig.blockSizeHorizontal,
+                            fontSize: 2.4 * SizeConfig.blockSizeHorizontal,
                             color: Colors.white,
                           ),
                         ),
+                        style: ElevatedButton.styleFrom(
+                          splashFactory: viewMode == 0
+                              ? NoSplash.splashFactory
+                              : InkSplash.splashFactory,
+                          primary: elictricBlue,
+                          elevation: 0,
+                          fixedSize: Size(
+                            viewMode == 0
+                                ? SizeConfig.screenWidth * 0.35
+                                : SizeConfig.screenWidth * 0.3,
+                            SizeConfig.screenHeight * 0.05,
+                          ),
+                        ),
                       ),
+                      // Container(
+                      //   padding: EdgeInsets.symmetric(
+                      //     horizontal: SizeConfig.screenWidth * 0.012,
+                      //     vertical: SizeConfig.screenHeight * 0.01,
+                      //   ),
+                      //   decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(
+                      //         SizeConfig.screenHeight * 0.007),
+                      //     color: elictricBlue,
+                      //   ),
+                      //   alignment: Alignment.center,
+                      //   child: Text(
+                      //     'vous avez ${request.countOffers ?? 0} offres',
+                      //     style: GoogleFonts.montserrat(
+                      //       fontWeight: FontWeight.w600,
+                      //       fontSize: 2.7 * SizeConfig.blockSizeHorizontal,
+                      //       color: Colors.white,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 )

@@ -20,285 +20,307 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-        top: MediaQuery.of(context).viewPadding.top +
-            SizeConfig.screenHeight * 0.02,
-      ),
-      color: seaBlue,
-      child: Consumer<ProfileViewModel>(
-        builder: (context, value, child) => FutureBuilder(
-          future: value.getProfileDetails(),
-          builder: (context, snapShot) => snapShot.connectionState ==
-                  ConnectionState.waiting
-              ? const CustomCircuarProgressIdicator()
-              : SmartRefresher(
-                  controller: value.refreshController,
-                  onRefresh: () => value.refresh(),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                            left: SizeConfig.screenWidth * 0.05,
-                            right: SizeConfig.screenWidth * 0.05,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    userCont.profileName,
-                                    style: GoogleFonts.montserrat(
-                                      fontWeight: FontWeight.w600,
-                                      color: Colors.white,
-                                      fontSize:
-                                          2.7 * SizeConfig.blockSizeVertical,
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.only(
+          top: MediaQuery.of(context).viewPadding.top +
+              SizeConfig.screenHeight * 0.02,
+        ),
+        color: seaBlue,
+        child: Consumer<ProfileViewModel>(
+          builder: (context, value, child) => FutureBuilder(
+            future: value.getProfileDetails(),
+            builder: (context, snapShot) => snapShot.connectionState ==
+                    ConnectionState.waiting
+                ? const CustomCircuarProgressIdicator()
+                : SmartRefresher(
+                    controller: value.refreshController,
+                    onRefresh: () => value.refresh(),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              left: SizeConfig.screenWidth * 0.05,
+                              right: SizeConfig.screenWidth * 0.05,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      userConst.profileName,
+                                      style: GoogleFonts.montserrat(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white,
+                                        fontSize:
+                                            2.7 * SizeConfig.blockSizeVertical,
+                                      ),
                                     ),
-                                  ),
-                                  userCont.type != null
-                                      ? Container(
-                                          decoration: const BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: Colors.white,
-                                          ),
-                                          clipBehavior: Clip.antiAlias,
-                                          padding: EdgeInsets.all(
-                                              SizeConfig.screenHeight * 0.005),
-                                          child: Text(
-                                            userCont.type!,
-                                            style: GoogleFonts.poppins(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize:
-                                                  SizeConfig.blockSizeVertical *
-                                                      2.8,
-                                              color: Colors.red,
+                                    !userConst.isTypeActivated
+                                        ? Text(
+                                            "*votre compte n'est pas encore activé",
+                                            style: GoogleFonts.montserrat(
+                                              fontWeight: FontWeight.w400,
+                                              color:
+                                                  Theme.of(context).errorColor,
+                                              fontSize: 3 *
+                                                  SizeConfig
+                                                      .blockSizeHorizontal,
                                             ),
-                                          ),
-                                        )
-                                      : Container(),
-                                ],
-                              ),
-                              CustomIconButton(
-                                icon: SvgPicture.asset(
-                                  "assets/Notification.svg",
-                                  color: Colors.white,
+                                          )
+                                        : userConst.type != null
+                                            ? Container(
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.white,
+                                                ),
+                                                clipBehavior: Clip.antiAlias,
+                                                padding: EdgeInsets.all(
+                                                    SizeConfig.screenHeight *
+                                                        0.005),
+                                                child: Text(
+                                                  userConst.type!,
+                                                  style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: SizeConfig
+                                                            .blockSizeVertical *
+                                                        2.8,
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                              )
+                                            : Container(),
+                                  ],
                                 ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ComingSoonView()),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          width: SizeConfig.screenWidth,
-                          height: SizeConfig.screenHeight * 0.8,
-                          child: Stack(
-                            alignment: Alignment.topCenter,
-                            children: [
-                              Positioned(
-                                top: SizeConfig.screenHeight * 0.075,
-                                child: Container(
-                                  width: SizeConfig.screenWidth,
-                                  height: SizeConfig.screenHeight * 0.75,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(
-                                          SizeConfig.screenHeight * 0.05),
-                                      topRight: Radius.circular(
-                                          SizeConfig.screenHeight * 0.05),
-                                    ),
+                                CustomIconButton(
+                                  icon: SvgPicture.asset(
+                                    "assets/Notification.svg",
                                     color: Colors.white,
                                   ),
-                                  clipBehavior: Clip.antiAlias,
-                                  padding: EdgeInsets.only(
-                                    top: SizeConfig.screenHeight * 0.12,
-                                    right: SizeConfig.screenWidth * 0.05,
-                                    left: SizeConfig.screenWidth * 0.05,
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      CustomProfileRow(
-                                        icon: "assets/profile.svg",
-                                        title: 'Profil',
-                                        onPressed: () => value.goToPage(
-                                            context, const ProfileSettings()),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const ComingSoonView()),
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            width: SizeConfig.screenWidth,
+                            height: userConst.isTypeActivated
+                                ? SizeConfig.screenHeight * 0.8
+                                : SizeConfig.screenHeight * 0.865,
+                            child: Stack(
+                              alignment: Alignment.topCenter,
+                              children: [
+                                Positioned(
+                                  top: SizeConfig.screenHeight * 0.075,
+                                  child: Container(
+                                    width: SizeConfig.screenWidth,
+                                    height: userConst.isTypeActivated
+                                        ? SizeConfig.screenHeight * 0.75
+                                        : SizeConfig.screenHeight * 0.865,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(
+                                            SizeConfig.screenHeight * 0.05),
+                                        topRight: Radius.circular(
+                                            SizeConfig.screenHeight * 0.05),
                                       ),
-                                      CustomProfileRow(
-                                        icon: "assets/gift.svg",
-                                        title: 'Historique des demandes',
-                                        onPressed: () => value.goToPage(
-                                            context, const RequestHistory()),
-                                      ),
-                                      CustomProfileRow(
-                                        icon: "assets/staff.svg",
-                                        title: 'Contactez-nous',
-                                        onPressed: () => value.goToPage(
-                                            context, const ComingSoonView()),
-                                      ),
-                                      CustomProfileRow(
-                                        icon: "assets/info.svg",
-                                        title: 'A Propos',
-                                        onPressed: () => value.goToPage(
-                                            context, const ComingSoonView()),
-                                      ),
-                                      Container(
-                                        height: SizeConfig.screenHeight * 0.1,
-                                        alignment: Alignment.center,
-                                        child: Material(
-                                          color: Colors.transparent,
-                                          child: InkWell(
-                                            onTap: () => value.logout(context),
-                                            child: SizedBox(
-                                              width: SizeConfig.screenWidth *
-                                                  0.265,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  SvgPicture.asset(
-                                                    "assets/logout.svg",
-                                                    height: SizeConfig
-                                                            .screenHeight *
-                                                        0.025,
-                                                  ),
-                                                  Text(
-                                                    'déconnexion',
-                                                    style:
-                                                        GoogleFonts.montserrat(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: elictricBlue,
-                                                      fontSize: 3 *
-                                                          SizeConfig
-                                                              .blockSizeHorizontal,
+                                      color: Colors.white,
+                                    ),
+                                    clipBehavior: Clip.antiAlias,
+                                    padding: EdgeInsets.only(
+                                      top: SizeConfig.screenHeight * 0.12,
+                                      right: SizeConfig.screenWidth * 0.05,
+                                      left: SizeConfig.screenWidth * 0.05,
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        CustomProfileRow(
+                                          icon: "assets/profile.svg",
+                                          title: 'Profil',
+                                          onPressed: () => value.goToPage(
+                                              context, const ProfileSettings()),
+                                        ),
+                                        CustomProfileRow(
+                                          icon: "assets/gift.svg",
+                                          title: 'Historique des demandes',
+                                          onPressed: () => value.goToPage(
+                                              context, const RequestHistory()),
+                                        ),
+                                        CustomProfileRow(
+                                          icon: "assets/staff.svg",
+                                          title: 'Contactez-nous',
+                                          onPressed: () => value.goToPage(
+                                              context, const ComingSoonView()),
+                                        ),
+                                        CustomProfileRow(
+                                          icon: "assets/info.svg",
+                                          title: 'A Propos',
+                                          onPressed: () => value.goToPage(
+                                              context, const ComingSoonView()),
+                                        ),
+                                        Container(
+                                          height: SizeConfig.screenHeight * 0.1,
+                                          alignment: Alignment.center,
+                                          child: Material(
+                                            color: Colors.transparent,
+                                            child: InkWell(
+                                              onTap: () =>
+                                                  value.logout(context),
+                                              child: SizedBox(
+                                                width: SizeConfig.screenWidth *
+                                                    0.265,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    SvgPicture.asset(
+                                                      "assets/logout.svg",
+                                                      height: SizeConfig
+                                                              .screenHeight *
+                                                          0.025,
                                                     ),
-                                                  )
-                                                ],
+                                                    Text(
+                                                      'déconnexion',
+                                                      style: GoogleFonts
+                                                          .montserrat(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: elictricBlue,
+                                                        fontSize: 3 *
+                                                            SizeConfig
+                                                                .blockSizeHorizontal,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
+                                Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                      clipBehavior: Clip.antiAlias,
+                                      height: SizeConfig.screenHeight * 0.16,
+                                      width: SizeConfig.screenHeight * 0.16,
                                     ),
-                                    clipBehavior: Clip.antiAlias,
-                                    height: SizeConfig.screenHeight * 0.16,
-                                    width: SizeConfig.screenHeight * 0.16,
-                                  ),
-                                  Container(
-                                    decoration: const BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.white,
-                                    ),
-                                    clipBehavior: Clip.antiAlias,
-                                    child: value.picture != null
-                                        ? SizedBox(
-                                            height:
-                                                SizeConfig.screenHeight * 0.15,
-                                            width:
-                                                SizeConfig.screenHeight * 0.15,
-                                            child: Stack(
-                                              children: [
-                                                Image.file(
-                                                  value.picture!,
-                                                  height:
-                                                      SizeConfig.screenHeight *
-                                                          0.15,
-                                                  width:
-                                                      SizeConfig.screenHeight *
-                                                          0.15,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                                value.pictureWorking
-                                                    ? Opacity(
-                                                        opacity: 0.4,
-                                                        child: Container(
-                                                            color:
-                                                                Colors.white),
-                                                      )
-                                                    : Container(),
-                                                value.pictureWorking
-                                                    ? Center(
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          color: elictricBlue,
-                                                          strokeWidth: 0.7,
-                                                        ),
-                                                      )
-                                                    : Container()
-                                              ],
-                                            ),
-                                          )
-                                        : CachedNetworkImage(
-                                            imageUrl: userCont
-                                                    .getProfile.profilePic ??
-                                                "",
-                                            fit: BoxFit.cover,
-                                            errorWidget: (context, str, dyn) =>
-                                                SvgPicture.asset(
-                                                    "assets/arbpharm_logo.svg"),
-                                            progressIndicatorBuilder:
-                                                (context, str, progress) =>
-                                                    SizedBox(
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white,
+                                      ),
+                                      clipBehavior: Clip.antiAlias,
+                                      child: value.picture != null
+                                          ? SizedBox(
                                               height: SizeConfig.screenHeight *
                                                   0.15,
                                               width: SizeConfig.screenHeight *
                                                   0.15,
-                                              child:
-                                                  const LinearProgressIndicator(),
+                                              child: Stack(
+                                                children: [
+                                                  Image.file(
+                                                    value.picture!,
+                                                    height: SizeConfig
+                                                            .screenHeight *
+                                                        0.15,
+                                                    width: SizeConfig
+                                                            .screenHeight *
+                                                        0.15,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                  value.pictureWorking
+                                                      ? Opacity(
+                                                          opacity: 0.4,
+                                                          child: Container(
+                                                              color:
+                                                                  Colors.white),
+                                                        )
+                                                      : Container(),
+                                                  value.pictureWorking
+                                                      ? Center(
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            color: elictricBlue,
+                                                            strokeWidth: 0.7,
+                                                          ),
+                                                        )
+                                                      : Container()
+                                                ],
+                                              ),
+                                            )
+                                          : CachedNetworkImage(
+                                              imageUrl: userConst
+                                                      .getProfile.profilePic ??
+                                                  "",
+                                              fit: BoxFit.cover,
+                                              errorWidget: (context, str,
+                                                      dyn) =>
+                                                  SvgPicture.asset(
+                                                      "assets/arbpharm_logo.svg"),
+                                              progressIndicatorBuilder:
+                                                  (context, str, progress) =>
+                                                      SizedBox(
+                                                height:
+                                                    SizeConfig.screenHeight *
+                                                        0.15,
+                                                width: SizeConfig.screenHeight *
+                                                    0.15,
+                                                child:
+                                                    const LinearProgressIndicator(),
+                                              ),
+                                              height: SizeConfig.screenHeight *
+                                                  0.15,
+                                              width: SizeConfig.screenHeight *
+                                                  0.15,
                                             ),
-                                            height:
-                                                SizeConfig.screenHeight * 0.15,
-                                            width:
-                                                SizeConfig.screenHeight * 0.15,
-                                          ),
-                                  ),
-                                ],
-                              ),
-                              Positioned(
-                                top: SizeConfig.screenHeight * 0.1,
-                                right: SizeConfig.screenWidth * 0.35,
-                                child: CustomIconButton(
-                                  height: SizeConfig.screenHeight * 0.04,
-                                  width: SizeConfig.screenHeight * 0.04,
-                                  backColor: elictricBlue,
-                                  icon: SvgPicture.asset("assets/pencil.svg"),
-                                  onPressed: () =>
-                                      value.storeProfilePic(context),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
+                                Positioned(
+                                  top: SizeConfig.screenHeight * 0.1,
+                                  right: SizeConfig.screenWidth * 0.35,
+                                  child: CustomIconButton(
+                                    height: SizeConfig.screenHeight * 0.04,
+                                    width: SizeConfig.screenHeight * 0.04,
+                                    backColor: elictricBlue,
+                                    icon: SvgPicture.asset("assets/pencil.svg"),
+                                    onPressed: () =>
+                                        value.storeProfilePic(context),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
+          ),
         ),
       ),
     );

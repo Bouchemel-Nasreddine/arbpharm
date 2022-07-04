@@ -4,7 +4,6 @@ import 'package:arbpharm/Views/profile/profile_view.dart';
 import 'package:arbpharm/configs/size_config.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../configs/const.dart';
 import 'package:flutter/material.dart';
@@ -96,6 +95,7 @@ class _GeneraleHomeState extends State<GeneraleHomeView> {
         screens: _buildScreens(),
         controller: _tabsController,
         navBarStyle: NavBarStyle.style12,
+        resizeToAvoidBottomInset: true,
         items: _barIcon(),
         decoration: NavBarDecoration(
           boxShadow: [

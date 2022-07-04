@@ -37,12 +37,7 @@ class RegisterModel {
         "social_place": socialPlace,
         "activity_code": activityCode,
         "profile_pic": profilePic!,
-        "images": [
-          images[0],
-          images[1],
-          images[2],
-          images[3],
-        ],
+        "images": images,
       },
     );
     if (kDebugMode) {
@@ -69,9 +64,9 @@ class RegisterModel {
     }
   }
 
-  parseUserData({required String data}) {
-    var jsonData = jsonEncode(data);
-  }
+  // parseUserData({required String data}) {
+  //   var jsonData = jsonEncode(data);
+  // }
 
   Future<http.Response> registerHttp({
     required String phone,

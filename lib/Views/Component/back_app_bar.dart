@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../configs/const.dart';
@@ -16,7 +15,6 @@ class CustomBackAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topPadding = MediaQuery.of(context).viewPadding.top;
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.transparent,

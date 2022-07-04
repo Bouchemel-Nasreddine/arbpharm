@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/const.dart';
 import '../../configs/size_config.dart';
-import '../Component/coming_soon_view.dart';
+import '../home/add_dialog_view.dart';
 
 class BookmarkView extends StatelessWidget {
   const BookmarkView({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class BookmarkView extends StatelessWidget {
         preferredSize:
             Size(SizeConfig.screenWidth, SizeConfig.screenHeight * 0.09),
         child: CustomAppBar(
-          addPressed: () => {},
+          addPressed: () => displayAddDialog(context),
         ),
       ),
       body: Container(
@@ -33,6 +33,22 @@ class BookmarkView extends StatelessWidget {
         ),
         child: const Center(child: Text('< Coming soon :) />')),
       ),
+    );
+  }
+
+  void displayAddDialog(context) {
+    showGeneralDialog(
+      context: context,
+      transitionBuilder: (context, a1, a2, widget) {
+        return Transform.scale(
+          scale: a1.value,
+          child: Opacity(opacity: a1.value, child: widget),
+        );
+      },
+      pageBuilder: (BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation) {
+        return const AddDialogView();
+      },
     );
   }
 }

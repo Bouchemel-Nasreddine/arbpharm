@@ -10,6 +10,7 @@ class HomeViewModel extends ChangeNotifier {
   bool working = false;
   final requestModel = RequestModel();
   List<Request> requestList = [];
+  int page = 1;
 
   Future<void> getRequests(BuildContext context) async {
     working = true;
@@ -27,7 +28,15 @@ class HomeViewModel extends ChangeNotifier {
       print(response.data);
     }
 
-    if (response.statusCode == 200) {}
+    if (response.statusCode == 200) {
+      if (response.data != "") {
+        requestList.clear();
+        var data = response.data['data'];
+        for (var req in data) {
+          requestList.add(Request.fromJson(req));
+        }
+      }
+    }
 
     working = false;
     notifyListeners();

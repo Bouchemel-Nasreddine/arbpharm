@@ -37,21 +37,20 @@ class User {
   late int? productCount;
   late int? requestCount;
   late bool connected;
+  late bool isTypeActivated;
 
   User.fromLoginInVerification(Map<String, dynamic> json) {
-    id = json['id'];
-    phone = json['phone'];
-    profileName = json['profile_name'];
-    productCount = json['products_count'];
-    requestCount = json['requests_count'];
     connected = true;
+    isTypeActivated = isTypeActivated;
   }
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    email = json['email'];
     phone = json['phone'];
+    email = json['email'];
     token = json['token'];
+    productCount = json['products_count'];
+    requestCount = json['requests_count'];
     expiredAt = json['expired_at'];
     type = json['type'];
     if (json.containsKey('success')) success = json['success'];
@@ -62,6 +61,7 @@ class User {
     activationDate = json['activation_date'];
     getProfile = Profile.fromJson(json['get_profile']);
     connected = true;
+    isTypeActivated = json['is_active'];
   }
 
   Map<String, dynamic> toJson() {

@@ -66,7 +66,7 @@ class Register extends StatelessWidget {
                               validator: (value) {
                                 if (value == null) return '';
                                 if (value.isEmpty) {
-                                  return 'required field';
+                                  return 'champ obligatoire';
                                 }
                                 return null;
                               },
@@ -78,7 +78,7 @@ class Register extends StatelessWidget {
                               validator: (value) {
                                 if (value == null) return '';
                                 if (value.isEmpty) {
-                                  return 'required field';
+                                  return 'champ obligatoire';
                                 }
                                 return null;
                               },
@@ -90,7 +90,7 @@ class Register extends StatelessWidget {
                               validator: (value) {
                                 if (value == null) return '';
                                 if (value.isEmpty) {
-                                  return 'required field';
+                                  return 'champ obligatoire';
                                 } else if (value.length != 10) {
                                   return 'phone length must be 10 digits';
                                 }
@@ -105,7 +105,7 @@ class Register extends StatelessWidget {
                               validator: (value) {
                                 if (value == null) return '';
                                 if (value.isEmpty) {
-                                  return 'required field';
+                                  return 'champ obligatoire';
                                 }
                                 return null;
                               },

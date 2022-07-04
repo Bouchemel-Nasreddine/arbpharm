@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -55,7 +54,7 @@ class ResetPasswordView extends StatelessWidget {
                         validator: (value) {
                           if (value == null) return '';
                           if (value.isEmpty) {
-                            return 'required field';
+                            return 'champ obligatoire';
                           }
                           return null;
                         },
@@ -68,7 +67,7 @@ class ResetPasswordView extends StatelessWidget {
                         validator: (val) {
                           if (val == null) return '';
                           if (val.isEmpty) {
-                            return 'required field';
+                            return 'champ obligatoire';
                           }
                           return null;
                         },
@@ -81,7 +80,7 @@ class ResetPasswordView extends StatelessWidget {
                         validator: (val) {
                           if (val == null) return '';
                           if (val.isEmpty) {
-                            return 'required field';
+                            return 'champ obligatoire';
                           } else if (val != value.newPasswordController.text) {
                             return 'les deux mots de passes ne sont pas identiques';
                           }

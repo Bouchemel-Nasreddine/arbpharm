@@ -1,7 +1,8 @@
+import 'dart:convert';
+
 import 'package:arbpharm/Models/Authentication/login_model.dart';
+import 'package:arbpharm/Models/profile/profile_model.dart';
 import 'package:arbpharm/configs/generale_vars.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart' as dio;
@@ -19,6 +20,7 @@ class LoginViewModel extends ChangeNotifier {
   final confirmPasswordController = TextEditingController();
   bool working = false;
   final model = LoginModel();
+  final profileModel = ProfileModel();
 
   // getWilaya() async {
   //   http.Response response = await http.get(
@@ -50,16 +52,39 @@ class LoginViewModel extends ChangeNotifier {
       return;
     }
     if (response.statusCode == 200) {
-      userCont = User.fromJson(response.data);
-      if (userCont.connected) {
+      userConst = User.fromJson(response.data);
+      if (userConst.connected) {
+        //verify account activation
+        dio.Response? checkUser = await profileModel.checkProfileActivation(
+            token: response.data['token']);
+
+        if (checkUser != null) {
+          if (checkUser.statusCode == 200) {
+            // var data = json.decode(checkUser.data);
+            userConst.isTypeActivated = checkUser.data["is_active"];
+          } else if (checkUser.statusCode == 401) {
+            userConst.isTypeActivated = false;
+          } else {
+            showSnackBar(
+                context: context, message: "erreur dans l'authentification");
+
+            working = false;
+            notifyListeners();
+            return;
+          }
+        }
+
         tokenConst = response.data['token'];
-        (await SharedPreferences.getInstance()).setInt("id", userCont.id);
+        (await SharedPreferences.getInstance()).setInt("id", userConst.id);
         (await SharedPreferences.getInstance())
             .setString("token", response.data['token']);
-        emailController.text = "";
-        passwordController.text = "";
-        navigateToHome(context);
       }
+
+      emailController.text = "";
+      passwordController.text = "";
+      userConst.isTypeActivated
+          ? navigateToHome(context)
+          : navigateToProfile(context);
     } else if (response.statusCode == 403) {
       showSnackBar(
           context: context,
@@ -163,6 +188,14 @@ class LoginViewModel extends ChangeNotifier {
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/generale_home_view',
+      (route) => false,
+    );
+  }
+
+  navigateToProfile(BuildContext context) {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/profile_view',
       (route) => false,
     );
   }

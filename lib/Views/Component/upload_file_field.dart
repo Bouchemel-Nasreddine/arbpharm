@@ -58,7 +58,22 @@ class CustomUploadFileField extends StatelessWidget {
                     ),
                   ],
                 ),
-                SvgPicture.asset("assets/download.svg")
+                file == null
+                    ? SvgPicture.asset("assets/download.svg")
+                    : Container(
+                        clipBehavior: Clip.antiAlias,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(
+                              SizeConfig.screenHeight * 0.01),
+                        ),
+                        child: Image.file(
+                          file!,
+                          height: size.height * 0.72,
+                          width: size.height * 0.72,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
               ],
             ),
       style: ElevatedButton.styleFrom(

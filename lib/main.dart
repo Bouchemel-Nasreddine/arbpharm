@@ -19,16 +19,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../configs/const.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart' as dio;
 
-import 'Data Models/user.dart';
 import 'Models/profile/profile_model.dart';
 import 'ViewModels/profile/profile_viewmodel.dart';
 import 'Views/Authentication/register/category_view.dart';
 import 'Views/Authentication/register/payement_view.dart';
 import 'Views/Authentication/register/register_information_view.dart';
 import 'Views/Authentication/register/register_view.dart';
-import 'configs/size_config.dart';
+import 'Views/profile/profile_view.dart';
 
 void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -51,21 +50,23 @@ void main() async {
 
 Future<void> isLogedIn() async {
   var profileModel = ProfileModel();
-  int? id;
 
-  id = (await SharedPreferences.getInstance()).getInt("id");
   tokenConst = (await SharedPreferences.getInstance()).getString("token");
 
-  if (id != null && tokenConst != null) {
-    http.Response respsone =
-        await profileModel.getProfile(id: id, token: tokenConst!);
+  if (tokenConst != null) {
+    dio.Response? response = await profileModel.checkProfileActivation(
+      token: tokenConst!,
+    );
 
-    if (respsone.statusCode == 200) {
-      Map<String, Object> body = Map.from(jsonDecode(respsone.body));
-      userCont = User.fromLoginInVerification(body);
+    if (response == null) {
+      return;
+    }
+
+    if (response.statusCode == 200) {
+      userConst.connected = true;
+      userConst.isTypeActivated = response.data["is_active"];
     }
   }
-  FlutterNativeSplash.remove();
   return;
 }
 
@@ -74,8 +75,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FlutterNativeSplash.remove();
     return MaterialApp(
       color: seaBlue,
+      navigatorKey: mainNavigatorKey,
       routes: {
         '/login': (context) => Login(),
         '/register': (context) => Register(),
@@ -89,9 +92,14 @@ class MyApp extends StatelessWidget {
         '/product_details_view': (context) => const ProductDetailsView(),
         '/profile_settings': (context) => const ProfileSettings(),
         '/generale_home_view/requests_history': (context) =>
-            const RequestHistory()
+            const RequestHistory(),
+        '/profile_view': (context) => const ProfileView(),
       },
-      initialRoute: userCont.connected ? '/generale_home_view' : '/login',
+      initialRoute: userConst.connected
+          ? userConst.isTypeActivated
+              ? '/generale_home_view'
+              : '/profile_view'
+          : '/login',
     );
   }
 }

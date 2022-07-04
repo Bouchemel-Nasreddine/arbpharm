@@ -1,7 +1,6 @@
 import 'package:arbpharm/ViewModels/Authentication/login_viewmodel.dart';
 import 'package:arbpharm/Views/Component/button_widget.dart';
 import 'package:arbpharm/Views/Component/text_field_widget.dart';
-import 'package:arbpharm/configs/generale_vars.dart';
 import '../../../configs/const.dart';
 import '../../../configs/size_config.dart';
 import 'package:flutter/gestures.dart';
@@ -61,7 +60,7 @@ class Login extends StatelessWidget {
                         validator: (value) {
                           if (value == null) return '';
                           if (value.isEmpty) {
-                            return 'required field';
+                            return 'champ obligatoire';
                           }
                           return null;
                         },
@@ -74,14 +73,14 @@ class Login extends StatelessWidget {
                         validator: (value) {
                           if (value == null) return '';
                           if (value.isEmpty) {
-                            return 'required field';
+                            return 'champ obligatoire';
                           }
                           return null;
                         },
                       ),
                       CustomButton(
                           working: value.working,
-                          text: 'Sign in',
+                          text: 'Connexion',
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               value.login(context);
