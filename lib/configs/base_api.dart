@@ -12,3 +12,4 @@ var getMyRequestsUrl = baseApi + "/getMyRequest";
 var changePasswordUrl = baseApi + "/change-password";
 var updateProfileUrl = baseApi + "/update-profile";
 var checkUserUrl = baseApi + "/user/check-user";
+var postOfferUrl = requestEstimateUrl + "/store_offer";

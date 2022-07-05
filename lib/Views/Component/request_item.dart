@@ -1,4 +1,5 @@
 import 'package:arbpharm/Data%20Models/request.dart';
+import 'package:arbpharm/Views/request/add_offer.dart';
 import 'package:arbpharm/configs/const.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -119,7 +120,11 @@ class RequestItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       ElevatedButton(
-                        onPressed: viewMode == 0 ? () {} : () {},
+                        onPressed: viewMode == 0
+                            ? () {}
+                            : () {
+                                displayAddOfferDialog(context, request.id);
+                              },
                         child: Text(
                           viewMode == 0
                               ? 'vous avez ${request.countOffers ?? 0} offres'
@@ -172,6 +177,22 @@ class RequestItem extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void displayAddOfferDialog(context, int id) {
+    showGeneralDialog(
+      context: context,
+      transitionBuilder: (context, a1, a2, widget) {
+        return Transform.scale(
+          scale: a1.value,
+          child: Opacity(opacity: a1.value, child: widget),
+        );
+      },
+      pageBuilder: (BuildContext context, Animation<double> animation,
+          Animation<double> secondaryAnimation) {
+        return AddOfferDialog(requestId: id);
+      },
     );
   }
 }

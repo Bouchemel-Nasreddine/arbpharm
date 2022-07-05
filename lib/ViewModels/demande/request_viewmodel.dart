@@ -15,8 +15,13 @@ class RequestViewModel extends ChangeNotifier {
   final nameController = TextEditingController();
   final quantityController = TextEditingController();
   final marqueController = TextEditingController();
+  final offerNameController = TextEditingController();
+  final offerQuantityController = TextEditingController();
+  final offerMarqueController = TextEditingController();
+  final offerPriceController = TextEditingController();
   List<Request> personalRequestsList = [];
   File? photo;
+  File? offerPhoto;
   bool working = false;
   final refreshController = RefreshController();
 
@@ -26,6 +31,16 @@ class RequestViewModel extends ChangeNotifier {
 
     if (result != null) {
       photo = File(result.files.single.path!);
+      notifyListeners();
+    }
+  }
+
+  Future<void> getOfferPic() async {
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.image);
+
+    if (result != null) {
+      offerPhoto = File(result.files.single.path!);
       notifyListeners();
     }
   }
@@ -91,6 +106,52 @@ class RequestViewModel extends ChangeNotifier {
       notifyListeners();
       showSnackBar(
           context: context, message: 'votre demande a été envoyé avec success');
+    } else {
+      working = false;
+      notifyListeners();
+      showSnackBar(context: context, message: 'erreur');
+    }
+  }
+
+  postOffer(BuildContext context, int requestId) async {
+    if (offerPhoto == null) return;
+
+    working = true;
+    notifyListeners();
+
+    var picture64 = convertImageTo64(offerPhoto!);
+
+    dio.Response? reqponse = await model.postOfferOnRequest(
+      requestEstimateId: requestId,
+      productName: offerNameController.text,
+      amount: int.parse(offerQuantityController.text),
+      mark: offerMarqueController.text,
+      price: int.parse(offerPriceController.text),
+      images: picture64,
+    );
+
+    if (reqponse == null) {
+      showSnackBar(context: context, message: 'erreur');
+      return;
+    }
+
+    working = false;
+    notifyListeners();
+
+    if (reqponse.statusCode == 200) {
+      Navigator.pop(context);
+      offerNameController.clear();
+      offerMarqueController.clear();
+      offerQuantityController.clear();
+      offerPriceController.clear();
+      offerPhoto = null;
+      notifyListeners();
+      showSnackBar(
+          context: context, message: 'votre offer a été envoyé avec success');
+    } else {
+      working = false;
+      notifyListeners();
+      showSnackBar(context: context, message: 'erreur');
     }
   }
 
