@@ -95,9 +95,8 @@ class RequestItem extends StatelessWidget {
                         request.productName,
                         style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.w600,
-                          fontSize: viewMode == 0
-                              ? 2
-                              : 1.8 * SizeConfig.blockSizeVertical,
+                          fontSize: (viewMode == 0 ? 2 : 1.8) *
+                              SizeConfig.blockSizeVertical,
                           color: spaceCadet,
                         ),
                       ),
@@ -105,9 +104,8 @@ class RequestItem extends StatelessWidget {
                         'quantité: ${request.amount}',
                         style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.w600,
-                          fontSize: viewMode == 0
-                              ? 2
-                              : 1.8 * SizeConfig.blockSizeVertical,
+                          fontSize: (viewMode == 0 ? 2 : 1.8) *
+                              SizeConfig.blockSizeVertical,
                           color: spaceCadet,
                         ),
                       ),
@@ -115,7 +113,7 @@ class RequestItem extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  width: SizeConfig.screenWidth * 0.45,
+                  width: SizeConfig.screenWidth * (viewMode == 0 ? 0.41 : 0.45),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [

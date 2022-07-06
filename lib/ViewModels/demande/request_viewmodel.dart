@@ -24,6 +24,8 @@ class RequestViewModel extends ChangeNotifier {
   File? offerPhoto;
   bool working = false;
   final refreshController = RefreshController();
+  int historyPage = 1;
+  bool hasNextPage = true;
 
   Future<void> getPic() async {
     FilePickerResult? result =
@@ -51,7 +53,7 @@ class RequestViewModel extends ChangeNotifier {
   }
 
   getRequestHistory(BuildContext context) async {
-    dio.Response? response = await model.getMyRequests();
+    dio.Response? response = await model.getMyRequests(page: historyPage);
 
     if (response == null) {
       showSnackBar(
@@ -65,6 +67,9 @@ class RequestViewModel extends ChangeNotifier {
         for (var req in response.data) {
           personalRequestsList.add(Request.fromJson(req));
         }
+        hasNextPage =
+            response.data['last_page'] != response.data['current_page'];
+        historyPage++;
       }
     }
   }

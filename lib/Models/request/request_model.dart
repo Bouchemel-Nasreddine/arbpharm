@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart';
 class RequestModel {
   final _dioClient = dio.Dio();
 
-  Future<dio.Response?> getRequests() async {
+  Future<dio.Response?> getRequests({int page = 1}) async {
     try {
       dio.Response response = await _dioClient.get(
         requestEstimateUrl,
@@ -18,6 +18,7 @@ class RequestModel {
             "Accept": "application/json"
           },
         ),
+        queryParameters: {'page': page},
       );
 
       return response;
@@ -29,17 +30,17 @@ class RequestModel {
     }
   }
 
-  Future<dio.Response?> getMyRequests() async {
+  Future<dio.Response?> getMyRequests({int page = 1}) async {
     try {
-      dio.Response response = await _dioClient.get(
-        '$getMyRequestsUrl/${userConst.id}',
-        options: dio.Options(
-          headers: {
-            "Authorization": "Bearer $tokenConst",
-            "Accept": "application/json"
-          },
-        ),
-      );
+      dio.Response response =
+          await _dioClient.get('$getMyRequestsUrl/${userConst.id}',
+              options: dio.Options(
+                headers: {
+                  "Authorization": "Bearer $tokenConst",
+                  "Accept": "application/json"
+                },
+              ),
+              queryParameters: {'page': page});
 
       return response;
     } on dio.DioError catch (e) {

@@ -1,5 +1,6 @@
 import 'package:arbpharm/ViewModels/home/home_viewmodel.dart';
 import 'package:arbpharm/Views/Component/app_bar.dart';
+import 'package:arbpharm/Views/Component/custom_circular_progress_indicator.dart';
 import 'package:arbpharm/Views/Component/request_item.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,16 +19,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   TabController? _tabController;
+  ScrollController? _requestScrollController;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _requestScrollController = ScrollController();
   }
 
   @override
   void dispose() {
     super.dispose();
     _tabController!.dispose();
+    _requestScrollController!.dispose();
   }
 
   @override
@@ -119,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
                 ],
               ),
-              SizedBox(
+              Container(
                 height: SizeConfig.screenHeight * 0.67,
                 child: Consumer<HomeViewModel>(
                   builder: (context, value, child) {
@@ -130,19 +134,43 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         value.getRequests(context);
                       }
                     });
+                    _requestScrollController!.addListener(() {
+                      if (_requestScrollController!.position.maxScrollExtent ==
+                              _requestScrollController!.position.pixels &&
+                          value.requestHasNextPage) {
+                        value.getRequests(context);
+                      }
+                      ;
+                    });
                     return TabBarView(
                       controller: _tabController,
                       children: [
                         const Center(child: Text('< Coming soon :) />')),
                         value.working
-                            ? const Center(
-                                child: CircularProgressIndicator(),
+                            ? Center(
+                                child: CustomCircuarProgressIdicator(
+                                  color: elictricBlue,
+                                ),
                               )
                             : ListView.builder(
+                                controller: _requestScrollController,
                                 itemCount: value.requestList.length,
-                                itemBuilder: (context, index) => RequestItem(
-                                    viewMode: 1,
-                                    request: value.requestList[index]),
+                                itemBuilder: (context, index) => index ==
+                                        value.requestList.length - 1
+                                    ? value.requestHasNextPage
+                                        ? Container(
+                                            height:
+                                                SizeConfig.screenHeight * 0.12,
+                                            alignment: Alignment.topCenter,
+                                            child:
+                                                CustomCircuarProgressIdicator(
+                                              color: elictricBlue,
+                                            ),
+                                          )
+                                        : Container()
+                                    : RequestItem(
+                                        viewMode: 1,
+                                        request: value.requestList[index]),
                               ),
                       ],
                     );

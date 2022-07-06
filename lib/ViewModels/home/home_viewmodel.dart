@@ -7,16 +7,14 @@ import 'package:flutter/material.dart';
 import '../../configs/const.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  bool working = false;
+  bool working = true;
   final requestModel = RequestModel();
   List<Request> requestList = [];
-  int page = 1;
+  int requestPage = 1;
+  bool requestHasNextPage = true;
 
   Future<void> getRequests(BuildContext context) async {
-    working = true;
-    notifyListeners();
-
-    dio.Response? response = await requestModel.getRequests();
+    dio.Response? response = await requestModel.getRequests(page: requestPage);
 
     if (response == null) {
       working = false;
@@ -30,11 +28,14 @@ class HomeViewModel extends ChangeNotifier {
 
     if (response.statusCode == 200) {
       if (response.data != "") {
-        requestList.clear();
+        if (requestPage == 1) requestList.clear();
         var data = response.data['data'];
         for (var req in data) {
           requestList.add(Request.fromJson(req));
         }
+        requestHasNextPage =
+            response.data['last_page'] != response.data['current_page'];
+        requestPage++;
       }
     }
 
