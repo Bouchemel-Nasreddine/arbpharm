@@ -8,6 +8,8 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import '../../configs/const.dart';
 import 'package:flutter/material.dart';
 
+import '../products/own_products_view.dart';
+
 class GeneraleHomeView extends StatefulWidget {
   const GeneraleHomeView({Key? key}) : super(key: key);
 
@@ -20,7 +22,7 @@ class _GeneraleHomeState extends State<GeneraleHomeView> {
   List<Widget> _buildScreens() {
     return [
       const HomeScreen(),
-      const Center(child: Text('< Coming soon :) />')),
+      const OwnProductsView(),
       const BookmarkView(),
       const ProfileView(),
     ];

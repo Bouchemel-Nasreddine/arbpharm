@@ -1,8 +1,10 @@
 import 'package:arbpharm/ViewModels/Authentication/login_viewmodel.dart';
 import 'package:arbpharm/ViewModels/Authentication/register_viewmodel.dart';
+import 'package:arbpharm/ViewModels/Products/add_product_viewmodel.dart';
 import 'package:arbpharm/ViewModels/Products/products_viewmodel.dart';
 import 'package:arbpharm/ViewModels/demande/request_viewmodel.dart';
 import 'package:arbpharm/ViewModels/home/home_viewmodel.dart';
+import 'package:arbpharm/ViewModels/own%20products/own_products_viewmodel.dart';
 import 'package:arbpharm/Views/Authentication/login/login_view.dart';
 import 'package:arbpharm/Views/Authentication/login/password_forgotten_view.dart';
 import 'package:arbpharm/Views/Authentication/login/reset_password_view.dart';
@@ -40,6 +42,8 @@ void main() async {
         ChangeNotifierProvider(create: (context) => ProductsViewModel()),
         ChangeNotifierProvider(create: (context) => RequestViewModel()),
         ChangeNotifierProvider(create: (context) => ProfileViewModel()),
+        ChangeNotifierProvider(create: (context) => OwnProductsViewModel()),
+        ChangeNotifierProvider(create: (context) => AddProductViewModel()),
       ],
       child: const MyApp(),
     ),
@@ -50,6 +54,7 @@ Future<void> isLogedIn() async {
   var profileModel = ProfileModel();
 
   tokenConst = (await SharedPreferences.getInstance()).getString("token");
+  userConst.id = (await SharedPreferences.getInstance()).getInt("id")!;
 
   if (tokenConst != null) {
     dio.Response? response = await profileModel.checkProfileActivation(

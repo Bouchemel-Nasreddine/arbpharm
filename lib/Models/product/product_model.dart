@@ -32,7 +32,7 @@ class ProductsModel {
   Future<dio.Response?> getMyProducts({int page = 1}) async {
     try {
       dio.Response response =
-          await _dioClient.get('$productsUrl/${userConst.id}',
+          await _dioClient.get('$getMyProductsUrl/${userConst.id}',
               options: dio.Options(
                 headers: {
                   "Authorization": "Bearer $tokenConst",
@@ -51,10 +51,7 @@ class ProductsModel {
   }
 
   Future<dio.Response?> postProduct({
-    required String productName,
-    required int amount,
-    required String mark,
-    int? price,
+    required String description,
     required List<String> images,
   }) async {
     try {
@@ -66,12 +63,8 @@ class ProductsModel {
             "Accept": "application/json"
           },
         ),
-        data: dio.FormData.fromMap({
-          "product_name": productName,
-          "amount": amount,
-          "mark": mark,
-          "images": images
-        }),
+        data: dio.FormData.fromMap(
+            {"description": description, "images": images}),
       );
 
       return response;

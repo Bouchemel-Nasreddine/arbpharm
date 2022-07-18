@@ -1,4 +1,5 @@
 import 'package:arbpharm/Views/Component/coming_soon_view.dart';
+import 'package:arbpharm/Views/products/add_product_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,11 +28,11 @@ class AddDialogView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               GestureDetector(
-                onTap: () => displayAddProductDialog(context),
+                onTap: () => goToAddProduct(context),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius:
-                        BorderRadius.circular(SizeConfig.screenHeight * 0.035),
+                        BorderRadius.circular(SizeConfig.screenHeight * 0.025),
                     color: metalicSeaweed,
                   ),
                   width: SizeConfig.screenWidth * 0.65,
@@ -41,8 +42,8 @@ class AddDialogView extends StatelessWidget {
                     children: [
                       SvgPicture.asset(
                         "assets/products.svg",
-                        height: SizeConfig.screenHeight * 0.08,
-                        width: SizeConfig.screenHeight * 0.08,
+                        height: SizeConfig.screenHeight * 0.07,
+                        width: SizeConfig.screenHeight * 0.07,
                       ),
                       Container(
                         width: SizeConfig.screenWidth * 0.4,
@@ -51,7 +52,7 @@ class AddDialogView extends StatelessWidget {
                           'Publier un produit',
                           style: GoogleFonts.inter(
                             fontWeight: FontWeight.w600,
-                            fontSize: SizeConfig.blockSizeVertical * 2,
+                            fontSize: SizeConfig.blockSizeVertical * 1.7,
                             color: Colors.white,
                           ),
                         ),
@@ -65,7 +66,7 @@ class AddDialogView extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius:
-                        BorderRadius.circular(SizeConfig.screenHeight * 0.035),
+                        BorderRadius.circular(SizeConfig.screenHeight * 0.025),
                     color: metalicSeaweed,
                   ),
                   width: SizeConfig.screenWidth * 0.65,
@@ -75,8 +76,8 @@ class AddDialogView extends StatelessWidget {
                     children: [
                       SvgPicture.asset(
                         "assets/gift.svg",
-                        height: SizeConfig.screenHeight * 0.08,
-                        width: SizeConfig.screenHeight * 0.08,
+                        height: SizeConfig.screenHeight * 0.07,
+                        width: SizeConfig.screenHeight * 0.07,
                       ),
                       Container(
                         width: SizeConfig.screenWidth * 0.4,
@@ -85,7 +86,7 @@ class AddDialogView extends StatelessWidget {
                           'Une demande',
                           style: GoogleFonts.inter(
                             fontWeight: FontWeight.w600,
-                            fontSize: SizeConfig.blockSizeVertical * 2,
+                            fontSize: SizeConfig.blockSizeVertical * 1.7,
                             color: Colors.white,
                           ),
                         ),
@@ -117,17 +118,7 @@ displayAddDemandeDialog(context) {
       });
 }
 
-displayAddProductDialog(context) {
-  showGeneralDialog(
-      context: context,
-      transitionBuilder: (context, a1, a2, widget) {
-        return Transform.scale(
-          scale: a1.value,
-          child: Opacity(opacity: a1.value, child: widget),
-        );
-      },
-      pageBuilder: (BuildContext context, Animation<double> animation,
-          Animation<double> secondaryAnimation) {
-        return const ComingSoonView(); // AddProductDialog();
-      });
+goToAddProduct(context) {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => const AddProductView()));
 }

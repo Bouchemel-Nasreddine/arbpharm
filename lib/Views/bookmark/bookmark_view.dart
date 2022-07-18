@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../configs/const.dart';
 import '../../configs/size_config.dart';
+import '../Component/empty_state.dart';
 import '../home/add_dialog_view.dart';
 
 class BookmarkView extends StatelessWidget {
@@ -31,7 +32,7 @@ class BookmarkView extends StatelessWidget {
             topRight: Radius.circular(SizeConfig.screenHeight * 0.02),
           ),
         ),
-        child: const Center(child: Text('< Coming soon :) />')),
+        child: const Center(child: EmptyStateView()),
       ),
     );
   }

@@ -9,6 +9,8 @@ class CustomTextField extends StatelessWidget {
   final TextInputType type;
   final String? Function(String?)? validator;
   final bool isObscure;
+  final int? lines;
+
   const CustomTextField({
     Key? key,
     required this.label,
@@ -16,6 +18,7 @@ class CustomTextField extends StatelessWidget {
     required this.type,
     this.validator,
     this.isObscure = false,
+    this.lines,
   }) : super(key: key);
 
   @override
@@ -28,6 +31,8 @@ class CustomTextField extends StatelessWidget {
         fontSize: 1.7 * SizeConfig.blockSizeVertical,
         color: spaceCadet,
       ),
+      maxLines: lines,
+      minLines: lines,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: GoogleFonts.inter(

@@ -25,7 +25,7 @@ class RequestViewModel extends ChangeNotifier {
   bool working = false;
   final refreshController = RefreshController();
   int historyPage = 1;
-  bool hasNextPage = true;
+  bool hasNextPage = false;
 
   Future<void> getPic() async {
     FilePickerResult? result =
@@ -67,8 +67,8 @@ class RequestViewModel extends ChangeNotifier {
         for (var req in response.data) {
           personalRequestsList.add(Request.fromJson(req));
         }
-        hasNextPage =
-            response.data['last_page'] != response.data['current_page'];
+        // hasNextPage =
+        //     response.data['last_page'] != response.data['current_page'];
         historyPage++;
       }
     }

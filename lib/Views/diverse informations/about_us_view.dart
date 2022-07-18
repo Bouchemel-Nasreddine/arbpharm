@@ -1,14 +1,10 @@
 import 'package:arbpharm/Views/Component/about_us_element_view.dart';
 import 'package:arbpharm/configs/const.dart';
-import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../../configs/size_config.dart';
 import '../Component/back_app_bar.dart';
-import '../Component/coming_soon_view.dart';
 
 class AboutUsView extends StatelessWidget {
   const AboutUsView({Key? key}) : super(key: key);

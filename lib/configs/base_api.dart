@@ -15,3 +15,4 @@ var checkUserUrl = baseApi + "/user/check-user";
 var postOfferUrl = requestEstimateUrl + "/store_offer";
 var productsUrl = baseApi + "/product";
 var productRateUrl = productsUrl + "/rate";
+var getMyProductsUrl = baseApi + "/getMyProducts";

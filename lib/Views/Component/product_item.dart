@@ -9,7 +9,9 @@ import '../../Data Models/product.dart';
 
 class ProductItem extends StatelessWidget {
   final Product product;
-  const ProductItem({Key? key, required this.product}) : super(key: key);
+  final bool showFavorite;
+  const ProductItem({Key? key, required this.product, this.showFavorite = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class ProductItem extends StatelessWidget {
           Stack(
             alignment: Alignment.topRight,
             children: [
-              Container(
+              SizedBox(
                 height: SizeConfig.screenHeight * 0.2,
                 child: CachedNetworkImage(
                   imageUrl: product.image,
@@ -42,15 +44,21 @@ class ProductItem extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  showSnackBar(context: context, message: 'sous developpemnt');
-                },
-                icon: Icon(
-                  Icons.bookmark,
-                  color: Colors.white,
-                ),
-              ),
+              showFavorite
+                  ? IconButton(
+                      onPressed: () {
+                        showSnackBar(
+                          context: context,
+                          message: '<comming soon :) />',
+                          duration: const Duration(seconds: 2),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.bookmark,
+                        color: Colors.white,
+                      ),
+                    )
+                  : Container(),
             ],
           ),
           Container(
@@ -67,13 +75,16 @@ class ProductItem extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          product.description,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.montserrat(
-                            fontSize: 2.6 * SizeConfig.blockSizeVertical,
-                            fontWeight: FontWeight.w400,
-                            color: const Color(0xff2E2E2E),
+                        Container(
+                          width: SizeConfig.screenWidth * 0.3,
+                          child: Text(
+                            product.description,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.montserrat(
+                              fontSize: 2.6 * SizeConfig.blockSizeVertical,
+                              fontWeight: FontWeight.w400,
+                              color: const Color(0xff2E2E2E),
+                            ),
                           ),
                         ),
                         Icon(
@@ -83,14 +94,17 @@ class ProductItem extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Text(
-                      'publier par ${product.publishedBy}',
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.montserrat(
-                        fontSize: 1.7 * SizeConfig.blockSizeVertical,
-                        fontWeight: FontWeight.w400,
-                        color: const Color(0xff7A7A7A),
+                    Container(
+                      child: Text(
+                        'publier par ${product.publishedBy}',
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.montserrat(
+                          fontSize: 1.7 * SizeConfig.blockSizeVertical,
+                          fontWeight: FontWeight.w400,
+                          color: const Color(0xff7A7A7A),
+                        ),
                       ),
+                      width: SizeConfig.screenWidth * 0.26,
                     ),
                   ],
                 ),

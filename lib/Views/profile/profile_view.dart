@@ -4,6 +4,7 @@ import 'package:arbpharm/Views/Component/custom_circular_progress_indicator.dart
 import 'package:arbpharm/Views/Component/custom_icon_button.dart';
 import 'package:arbpharm/Views/Component/profile_row.dart';
 import 'package:arbpharm/Views/diverse%20informations/about_us_view.dart';
+import 'package:arbpharm/Views/diverse%20informations/contact_view.dart';
 import 'package:arbpharm/Views/profile/profile%20settings/profile_settings.dart';
 import 'package:arbpharm/Views/request/request_history.dart';
 import 'package:arbpharm/configs/const.dart';
@@ -165,7 +166,7 @@ class ProfileView extends StatelessWidget {
                                           icon: "assets/staff.svg",
                                           title: 'Contactez-nous',
                                           onPressed: () => value.goToPage(
-                                              context, const ComingSoonView()),
+                                              context, const ContactUsView()),
                                         ),
                                         CustomProfileRow(
                                           icon: "assets/info.svg",

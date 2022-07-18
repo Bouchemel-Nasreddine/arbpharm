@@ -1,6 +1,7 @@
 import 'package:arbpharm/ViewModels/demande/request_viewmodel.dart';
 import 'package:arbpharm/Views/Component/back_app_bar.dart';
 import 'package:arbpharm/Views/Component/custom_circular_progress_indicator.dart';
+import 'package:arbpharm/Views/Component/empty_state.dart';
 import 'package:arbpharm/Views/Component/request_item.dart';
 import 'package:arbpharm/configs/const.dart';
 import 'package:flutter/material.dart';
@@ -58,23 +59,14 @@ class _RequestHistoryState extends State<RequestHistory> {
                     child: Padding(
                       padding: EdgeInsets.symmetric(
                           horizontal: SizeConfig.screenWidth * 0.05),
-                      child: ListView.builder(
-                        itemCount: value.personalRequestsList.length,
-                        itemBuilder: (context, index) =>
-                            index == value.personalRequestsList.length - 1
-                                ? value.hasNextPage
-                                    ? Container(
-                                        height: SizeConfig.screenHeight * 0.12,
-                                        alignment: Alignment.topCenter,
-                                        child: CustomCircuarProgressIdicator(
-                                          color: elictricBlue,
-                                        ),
-                                      )
-                                    : Container()
-                                : RequestItem(
-                                    request: value.personalRequestsList[index],
-                                  ),
-                      ),
+                      child: value.personalRequestsList.isEmpty
+                          ? EmptyStateView()
+                          : ListView.builder(
+                              itemCount: value.personalRequestsList.length,
+                              itemBuilder: (context, index) => RequestItem(
+                                request: value.personalRequestsList[index],
+                              ),
+                            ),
                     ),
                   );
           },
