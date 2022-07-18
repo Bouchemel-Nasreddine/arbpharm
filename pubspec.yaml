@@ -45,6 +45,9 @@ dependencies:
   shared_preferences: ^2.0.15
   cached_network_image: ^3.2.0
   pull_to_refresh: ^2.0.0
+  flutter_launcher_icons: ^0.9.3
+  flutter_rating_bar: ^4.0.1
+  expandable: ^5.0.1
 
 dev_dependencies:
   flutter_test:
@@ -103,3 +106,10 @@ flutter:
 flutter_native_splash:
   color: "#FFFFFF"
   image: assets/arbpharm_logo.png
+
+flutter_icons:
+  ios: true
+  android: true
+  image_path_android: "assets/android_logo.png"
+  image_path_ios: "assets/ios_logo.png"
+  remove_alpha_ios: true

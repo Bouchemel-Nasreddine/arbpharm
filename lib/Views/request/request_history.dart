@@ -49,7 +49,6 @@ class _RequestHistoryState extends State<RequestHistory> {
                   value.hasNextPage) {
                 value.getRequestHistory(context);
               }
-              ;
             });
             return snapShot.connectionState == ConnectionState.waiting
                 ? CustomCircuarProgressIdicator(color: elictricBlue)

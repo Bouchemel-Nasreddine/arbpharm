@@ -3,8 +3,9 @@ import 'package:arbpharm/Views/Component/coming_soon_view.dart';
 import 'package:arbpharm/Views/Component/custom_circular_progress_indicator.dart';
 import 'package:arbpharm/Views/Component/custom_icon_button.dart';
 import 'package:arbpharm/Views/Component/profile_row.dart';
+import 'package:arbpharm/Views/diverse%20informations/about_us_view.dart';
 import 'package:arbpharm/Views/profile/profile%20settings/profile_settings.dart';
-import 'package:arbpharm/Views/profile/request_history.dart';
+import 'package:arbpharm/Views/request/request_history.dart';
 import 'package:arbpharm/configs/const.dart';
 import 'package:arbpharm/configs/generale_vars.dart';
 import 'package:arbpharm/configs/size_config.dart';
@@ -81,6 +82,7 @@ class ProfileView extends StatelessWidget {
                                                 padding: EdgeInsets.all(
                                                     SizeConfig.screenHeight *
                                                         0.005),
+                                                alignment: Alignment.center,
                                                 child: Text(
                                                   userConst.type!,
                                                   style: GoogleFonts.poppins(
@@ -169,7 +171,7 @@ class ProfileView extends StatelessWidget {
                                           icon: "assets/info.svg",
                                           title: 'A Propos',
                                           onPressed: () => value.goToPage(
-                                              context, const ComingSoonView()),
+                                              context, const AboutUsView()),
                                         ),
                                         Container(
                                           height: SizeConfig.screenHeight * 0.1,

@@ -13,3 +13,5 @@ var changePasswordUrl = baseApi + "/change-password";
 var updateProfileUrl = baseApi + "/update-profile";
 var checkUserUrl = baseApi + "/user/check-user";
 var postOfferUrl = requestEstimateUrl + "/store_offer";
+var productsUrl = baseApi + "/product";
+var productRateUrl = productsUrl + "/rate";

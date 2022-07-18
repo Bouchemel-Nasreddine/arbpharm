@@ -1,6 +1,7 @@
 import 'package:arbpharm/ViewModels/home/home_viewmodel.dart';
 import 'package:arbpharm/Views/Component/app_bar.dart';
 import 'package:arbpharm/Views/Component/custom_circular_progress_indicator.dart';
+import 'package:arbpharm/Views/Component/product_item.dart';
 import 'package:arbpharm/Views/Component/request_item.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,11 +21,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   TabController? _tabController;
   ScrollController? _requestScrollController;
+  ScrollController? _productsScrollController;
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _requestScrollController = ScrollController();
+    _productsScrollController = ScrollController();
   }
 
   @override
@@ -32,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.dispose();
     _tabController!.dispose();
     _requestScrollController!.dispose();
+    _productsScrollController!.dispose();
   }
 
   @override
@@ -123,29 +127,79 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ),
                 ],
               ),
-              Container(
+              SizedBox(
                 height: SizeConfig.screenHeight * 0.67,
                 child: Consumer<HomeViewModel>(
                   builder: (context, value, child) {
                     _tabController!.addListener(() {
                       if (!_tabController!.indexIsChanging) return;
-                      if (_tabController!.index == 0) {
-                      } else if (_tabController!.index == 1) {
+                      if (_tabController!.index == 0 &&
+                          !value.gettingProducts) {
+                        value.getProducts(context);
+                      } else if (_tabController!.index == 1 &&
+                          !value.gettingRequests) {
                         value.getRequests(context);
                       }
                     });
                     _requestScrollController!.addListener(() {
                       if (_requestScrollController!.position.maxScrollExtent ==
                               _requestScrollController!.position.pixels &&
-                          value.requestHasNextPage) {
+                          value.requestHasNextPage &&
+                          !value.gettingRequests) {
                         value.getRequests(context);
                       }
-                      ;
                     });
+                    _productsScrollController!.addListener(() {
+                      if (_productsScrollController!.position.maxScrollExtent ==
+                              _productsScrollController!.position.pixels &&
+                          value.productsHasNextPage &&
+                          !value.gettingProducts) {
+                        value.getProducts(context);
+                      }
+                    });
+                    if (value.productsList.isEmpty) {
+                      value.getProducts(context);
+                    }
                     return TabBarView(
                       controller: _tabController,
+                      physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        const Center(child: Text('< Coming soon :) />')),
+                        value.working
+                            ? Center(
+                                child: CustomCircuarProgressIdicator(
+                                  color: elictricBlue,
+                                ),
+                              )
+                            : GridView.builder(
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing:
+                                      SizeConfig.screenHeight * 0.025,
+                                  crossAxisSpacing:
+                                      SizeConfig.screenHeight * 0.04,
+                                  childAspectRatio:
+                                      (SizeConfig.screenWidth * 0.413) /
+                                          (SizeConfig.screenHeight * 0.35),
+                                ),
+                                controller: _productsScrollController,
+                                itemCount: value.productsList.length + 1,
+                                itemBuilder: (context, index) => index ==
+                                        value.productsList.length
+                                    ? value.productsHasNextPage
+                                        ? Container(
+                                            height:
+                                                SizeConfig.screenHeight * 0.12,
+                                            alignment: Alignment.topCenter,
+                                            child:
+                                                CustomCircuarProgressIdicator(
+                                              color: elictricBlue,
+                                            ),
+                                          )
+                                        : Container()
+                                    : ProductItem(
+                                        product: value.productsList[index]),
+                              ),
                         value.working
                             ? Center(
                                 child: CustomCircuarProgressIdicator(
@@ -170,7 +224,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         : Container()
                                     : RequestItem(
                                         viewMode: 1,
-                                        request: value.requestList[index]),
+                                        request: value.requestList[index],
+                                      ),
                               ),
                       ],
                     );

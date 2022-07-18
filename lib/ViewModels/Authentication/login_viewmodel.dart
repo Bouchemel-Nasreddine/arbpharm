@@ -1,10 +1,7 @@
-import 'dart:convert';
-
 import 'package:arbpharm/Models/Authentication/login_model.dart';
 import 'package:arbpharm/Models/profile/profile_model.dart';
 import 'package:arbpharm/configs/generale_vars.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart' as dio;
 import 'package:shared_preferences/shared_preferences.dart';
 
